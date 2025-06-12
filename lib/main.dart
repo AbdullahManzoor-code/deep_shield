@@ -5,6 +5,7 @@ import 'screens/file_selection_screen.dart';
 import 'screens/audio_selection_screen.dart';
 import 'screens/results_screen.dart';
 import 'services/audio_prediction_service.dart';
+import 'theme/app_theme.dart';
 
 void main() {
   runApp(const DeepShieldApp());
@@ -17,6 +18,7 @@ class DeepShieldApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Deep Shield',
+      debugShowCheckedModeBanner: false,
       theme: ThemeData(
         primarySwatch: Colors.purple,
         scaffoldBackgroundColor: Colors.black,
@@ -29,7 +31,10 @@ class DeepShieldApp extends StatelessWidget {
       ),
       home: const MainScreen(),
       routes: {
-        '/results': (context) => const ResultsScreen(selectedFile: 'Audio.mp3', result: 'Detection completed successfully!'),
+        '/results': (context) => const ResultsScreen(
+          selectedFile: 'Audio.mp3', 
+          result: 'Detection completed successfully!'
+        ),
       },
     );
   }
@@ -131,53 +136,53 @@ class _MainScreenState extends State<MainScreen> {
 }
 
 // Wrapper classes for navigation with state
-class AudioSelectionScreenWrapper extends StatefulWidget {
-  const AudioSelectionScreenWrapper({super.key});
+// class AudioSelectionScreenWrapper extends StatefulWidget {
+//   const AudioSelectionScreenWrapper({super.key});
 
-  @override
-  State<AudioSelectionScreenWrapper> createState() => _AudioSelectionScreenWrapperState();
-}
+//   @override
+//   State<AudioSelectionScreenWrapper> createState() => _AudioSelectionScreenWrapperState();
+// }
 
-class _AudioSelectionScreenWrapperState extends State<AudioSelectionScreenWrapper> {
-  String? _selectedFile;
-  bool _isDetecting = false;
+// class _AudioSelectionScreenWrapperState extends State<AudioSelectionScreenWrapper> {
+//   String? _selectedFile;
+//   bool _isDetecting = false;
 
-  void _selectFile() async {
-    FilePickerResult? result = await FilePicker.platform.pickFiles(
-      type: FileType.audio,
-      allowMultiple: false,
-    );
+//   void _selectFile() async {
+//     FilePickerResult? result = await FilePicker.platform.pickFiles(
+//       type: FileType.audio,
+//       allowMultiple: false,
+//     );
 
-    if (result != null) {
-      setState(() {
-        _selectedFile = result.files.single.name;
-      });
-    }
-  }
+//     if (result != null) {
+//       setState(() {
+//         _selectedFile = result.files.single.name;
+//       });
+//     }
+//   }
 
-  void _startDetection() {
-    setState(() {
-      _isDetecting = true;
-    });
+//   void _startDetection() {
+//     setState(() {
+//       _isDetecting = true;
+//     });
     
-    // Simulate detection process
-    Future.delayed(const Duration(seconds: 3), () {
-      setState(() {
-        _isDetecting = false;
-      });
-    });
-  }
+//     // Simulate detection process
+//     Future.delayed(const Duration(seconds: 3), () {
+//       setState(() {
+//         _isDetecting = false;
+//       });
+//     });
+//   }
 
-  @override
-  Widget build(BuildContext context) {
-    return AudioSelectionScreen(
-      onFileSelect: _selectFile,
-      onStartDetection: _startDetection,
-      selectedFile: _selectedFile ?? 'Audio.mp3',
-      isDetecting: _isDetecting,
-    );
-  }
-}
+//   @override
+//   Widget build(BuildContext context) {
+//     return AudioSelectionScreen(
+//       onFileSelect: _selectFile,
+//       onStartDetection: _startDetection,
+//       selectedFile: _selectedFile ?? 'Audio.mp3',
+//       isDetecting: _isDetecting,
+//     );
+//   }
+// }
 
 class ResultsScreenWrapper extends StatelessWidget {
   const ResultsScreenWrapper({super.key});

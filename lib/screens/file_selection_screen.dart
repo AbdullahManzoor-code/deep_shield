@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../utils/responsive_utils.dart';
 
 class FileSelectionScreen extends StatelessWidget {
   final VoidCallback onFileSelect;
@@ -16,19 +17,15 @@ class FileSelectionScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final screenSize = MediaQuery.of(context).size;
-    final isTablet = screenSize.width > 600;
-    final logoSize = isTablet ? 200.0 : 160.0;
-    
     return Scaffold(
       backgroundColor: const Color(0xFF0A0A0A),
       appBar: AppBar(
         backgroundColor: Colors.transparent,
-        title: const Text(
+        title: Text(
           'Deep Shield',
           style: TextStyle(
             color: Colors.white,
-            fontSize: 24,
+            fontSize: context.titleFontSize,
             fontWeight: FontWeight.bold,
           ),
         ),
@@ -37,19 +34,16 @@ class FileSelectionScreen extends StatelessWidget {
       body: SafeArea(
         child: SingleChildScrollView(
           child: Padding(
-            padding: EdgeInsets.symmetric(
-              horizontal: screenSize.width * 0.05,
-              vertical: 20,
-            ),
+            padding: context.responsivePadding,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                SizedBox(height: screenSize.height * 0.05),
+                SizedBox(height: context.getSpacing(1.5)),
                 
                 // Circular Logo with Gradient
                 Container(
-                  width: logoSize,
-                  height: logoSize,
+                  width: context.logoSize,
+                  height: context.logoSize,
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
                     gradient: const RadialGradient(
@@ -63,37 +57,37 @@ class FileSelectionScreen extends StatelessWidget {
                     boxShadow: [
                       BoxShadow(
                         color: Colors.cyan.withOpacity(0.5),
-                        blurRadius: 30,
-                        spreadRadius: 10,
+                        blurRadius: context.isDesktop ? 40 : 30,
+                        spreadRadius: context.isDesktop ? 15 : 10,
                       ),
                       BoxShadow(
                         color: Colors.purple.withOpacity(0.3),
-                        blurRadius: 50,
-                        spreadRadius: 20,
+                        blurRadius: context.isDesktop ? 60 : 50,
+                        spreadRadius: context.isDesktop ? 25 : 20,
                       ),
                     ],
                   ),
                   child: Container(
-                    margin: const EdgeInsets.all(8),
+                    margin: EdgeInsets.all(context.isDesktop ? 12 : 8),
                     decoration: const BoxDecoration(
                       shape: BoxShape.circle,
                       color: Color(0xFF1A1A1A),
                     ),
                     child: isDetecting
-                        ? const CircularProgressIndicator(
+                        ? CircularProgressIndicator(
                             color: Colors.cyan,
-                            strokeWidth: 3,
+                            strokeWidth: context.isDesktop ? 4 : 3,
                           )
                         : ClipOval(
                             child: Image.asset(
                               'asset/logo.png',
-                              width: logoSize - 16,
-                              height: logoSize - 16,
+                              width: context.logoSize - 16,
+                              height: context.logoSize - 16,
                               fit: BoxFit.cover,
                               errorBuilder: (context, error, stackTrace) {
-                                return const Icon(
+                                return Icon(
                                   Icons.security,
-                                  size: 80,
+                                  size: context.logoSize * 0.4,
                                   color: Colors.white,
                                 );
                               },
@@ -102,41 +96,41 @@ class FileSelectionScreen extends StatelessWidget {
                   ),
                 ),
                 
-                SizedBox(height: screenSize.height * 0.08),
+                SizedBox(height: context.getSpacing(2)),
                 
                 // App Title
                 Text(
                   'Deepfake Voice Detection',
                   style: TextStyle(
                     color: Colors.white,
-                    fontSize: isTablet ? 28 : 24,
+                    fontSize: context.titleFontSize + 4,
                     fontWeight: FontWeight.bold,
                     letterSpacing: 1.2,
                   ),
                   textAlign: TextAlign.center,
                 ),
                 
-                const SizedBox(height: 12),
+                SizedBox(height: context.getSpacing(0.5)),
                 
                 Text(
                   'Secure • Accurate • Real-time',
                   style: TextStyle(
                     color: Colors.grey[400],
-                    fontSize: isTablet ? 18 : 16,
+                    fontSize: context.subtitleFontSize,
                     letterSpacing: 0.8,
                   ),
                   textAlign: TextAlign.center,
                 ),
                 
-                SizedBox(height: screenSize.height * 0.08),
+                SizedBox(height: context.getSpacing(2)),
                 
                 // File Selection Card
                 Container(
                   width: double.infinity,
                   constraints: BoxConstraints(
-                    maxWidth: isTablet ? 500 : double.infinity,
+                    maxWidth: context.maxContentWidth * 0.8,
                   ),
-                  padding: const EdgeInsets.all(24),
+                  padding: context.cardPadding,
                   decoration: BoxDecoration(
                     gradient: LinearGradient(
                       colors: [
@@ -146,7 +140,7 @@ class FileSelectionScreen extends StatelessWidget {
                       begin: Alignment.topLeft,
                       end: Alignment.bottomRight,
                     ),
-                    borderRadius: BorderRadius.circular(20),
+                    borderRadius: BorderRadius.circular(context.borderRadius),
                     border: Border.all(
                       color: Colors.purple.withOpacity(0.3),
                       width: 1,
@@ -163,32 +157,32 @@ class FileSelectionScreen extends StatelessWidget {
                     children: [
                       Icon(
                         Icons.audiotrack_rounded,
-                        size: isTablet ? 50 : 40,
+                        size: context.iconSize + 16,
                         color: Colors.purple[300],
                       ),
-                      const SizedBox(height: 16),
+                      SizedBox(height: context.getSpacing(0.5)),
                       Text(
                         selectedFile ?? 'No file selected',
                         style: TextStyle(
                           color: Colors.white,
-                          fontSize: isTablet ? 18 : 16,
+                          fontSize: context.subtitleFontSize,
                           fontWeight: FontWeight.w500,
                         ),
                         textAlign: TextAlign.center,
                       ),
-                      const SizedBox(height: 20),
+                      SizedBox(height: context.getSpacing(0.8)),
                       
                       // File Selection Button
                       SizedBox(
                         width: double.infinity,
-                        height: 50,
+                        height: context.buttonHeight,
                         child: ElevatedButton.icon(
                           onPressed: onFileSelect,
                           icon: const Icon(Icons.folder_open_rounded),
-                          label: const Text(
+                          label: Text(
                             'Choose Audio File',
                             style: TextStyle(
-                              fontSize: 16,
+                              fontSize: context.bodyFontSize + 2,
                               fontWeight: FontWeight.w600,
                             ),
                           ),
@@ -196,7 +190,7 @@ class FileSelectionScreen extends StatelessWidget {
                             backgroundColor: Colors.purple,
                             foregroundColor: Colors.white,
                             shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(15),
+                              borderRadius: BorderRadius.circular(context.borderRadius * 0.8),
                             ),
                             elevation: 8,
                             shadowColor: Colors.purple.withOpacity(0.5),
@@ -207,21 +201,21 @@ class FileSelectionScreen extends StatelessWidget {
                   ),
                 ),
                 
-                SizedBox(height: screenSize.height * 0.06),
+                SizedBox(height: context.getSpacing(1.5)),
                 
                 // Detection Button
                 Container(
                   width: double.infinity,
                   constraints: BoxConstraints(
-                    maxWidth: isTablet ? 400 : double.infinity,
+                    maxWidth: context.maxContentWidth * 0.6,
                   ),
-                  height: 60,
+                  height: context.buttonHeight + 10,
                   child: ElevatedButton.icon(
                     onPressed: selectedFile != null && !isDetecting 
                         ? onStartDetection 
                         : null,
                     icon: isDetecting
-                        ? const SizedBox(
+                        ? SizedBox(
                             width: 20,
                             height: 20,
                             child: CircularProgressIndicator(
@@ -229,11 +223,14 @@ class FileSelectionScreen extends StatelessWidget {
                               strokeWidth: 2,
                             ),
                           )
-                        : const Icon(Icons.play_circle_filled_rounded, size: 28),
+                        : Icon(
+                            Icons.play_circle_filled_rounded, 
+                            size: context.iconSize + 4,
+                          ),
                     label: Text(
                       isDetecting ? 'Analyzing...' : 'Start Detection',
-                      style: const TextStyle(
-                        fontSize: 18,
+                      style: TextStyle(
+                        fontSize: context.subtitleFontSize,
                         fontWeight: FontWeight.bold,
                         letterSpacing: 0.5,
                       ),
@@ -244,7 +241,7 @@ class FileSelectionScreen extends StatelessWidget {
                           : Colors.grey[600],
                       foregroundColor: Colors.white,
                       shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20),
+                        borderRadius: BorderRadius.circular(context.borderRadius),
                       ),
                       elevation: selectedFile != null ? 12 : 4,
                       shadowColor: selectedFile != null
@@ -254,18 +251,18 @@ class FileSelectionScreen extends StatelessWidget {
                   ),
                 ),
                 
-                SizedBox(height: screenSize.height * 0.04),
+                SizedBox(height: context.getSpacing()),
                 
                 // Info Card
                 Container(
                   width: double.infinity,
                   constraints: BoxConstraints(
-                    maxWidth: isTablet ? 500 : double.infinity,
+                    maxWidth: context.maxContentWidth * 0.8,
                   ),
-                  padding: const EdgeInsets.all(20),
+                  padding: EdgeInsets.all(context.isDesktop ? 25 : 20),
                   decoration: BoxDecoration(
                     color: Colors.blue[900]!.withOpacity(0.2),
-                    borderRadius: BorderRadius.circular(15),
+                    borderRadius: BorderRadius.circular(context.borderRadius * 0.8),
                     border: Border.all(
                       color: Colors.blue.withOpacity(0.3),
                       width: 1,
@@ -276,15 +273,15 @@ class FileSelectionScreen extends StatelessWidget {
                       Icon(
                         Icons.info_outline_rounded,
                         color: Colors.blue[300],
-                        size: 24,
+                        size: context.iconSize,
                       ),
-                      const SizedBox(width: 12),
+                      SizedBox(width: context.getSpacing(0.5)),
                       Expanded(
                         child: Text(
                           'Upload an audio file to detect if it\'s generated by AI or is authentic human speech.',
                           style: TextStyle(
                             color: Colors.blue[100],
-                            fontSize: 14,
+                            fontSize: context.bodyFontSize,
                             height: 1.4,
                           ),
                         ),
@@ -292,6 +289,8 @@ class FileSelectionScreen extends StatelessWidget {
                     ],
                   ),
                 ),
+                
+                SizedBox(height: context.getSpacing()),
               ],
             ),
           ),
