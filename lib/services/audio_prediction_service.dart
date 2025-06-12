@@ -4,7 +4,7 @@ import 'package:http/http.dart' as http;
 import 'package:path/path.dart';
 
 class AudioPredictionService {
-  static const String _apiUrl = 'https://hamza-here-deep-shield.hf.space/run/predict';
+  static const String _apiUrl = 'https://Hamza-here-Deep-Shield-System.hf.space/predict';
 
   static Future<String> predictAudio(File audioFile) async {
     try {
@@ -13,9 +13,9 @@ class AudioPredictionService {
         Uri.parse(_apiUrl),
       );
 
-      // This matches how Gradio expects files
+      // Add the audio file as form-data with field name "audio"
       request.files.add(await http.MultipartFile.fromPath(
-        'data',  // Gradio expects the input to be named 'data'
+        'audio',  // API expects the input to be named 'audio'
         audioFile.path,
         filename: basename(audioFile.path),
       ));
@@ -26,20 +26,32 @@ class AudioPredictionService {
         final resStr = await response.stream.bytesToString();
         final jsonResponse = json.decode(resStr);
 
-        final label = jsonResponse['data'][0]; // Adjust this depending on Gradio output
-
-        final prediction = label.toString().toLowerCase().contains('real');
+        // Extract label and scores from the API response
+        final label = jsonResponse['label']; // Get the label from response
+        final scores = jsonResponse['scores']; // Get the scores object
         
-        if (prediction) {
-          return 'REAL VOICE DETECTED\n✅ Authenticity: 94.7%\n🔊 Voice Analysis: Natural speech patterns\n⚡ Confidence: High';
+        // Determine if it's real or fake based on the label
+        final isReal = label.toString().toLowerCase().contains('real');
+        
+        double confidence = 0.0;
+        if (scores != null) {
+          if (isReal && scores['real'] != null) {
+            confidence = (scores['real'] * 100).toDouble();
+          } else if (!isReal && scores['fake'] != null) {
+            confidence = (scores['fake'] * 100).toDouble();
+          }
+        }
+        
+        if (isReal) {
+          return 'REAL VOICE DETECTED\n✅ Authenticity: ${confidence.toStringAsFixed(1)}%\n🔊 Voice Analysis: Natural speech patterns\n⚡ Confidence: ${confidence > 80 ? 'High' : confidence > 60 ? 'Medium' : 'Low'}';
         } else {
-          return 'DEEPFAKE DETECTED\n⚠️ Authenticity: 23.1%\n🤖 AI Generated: High probability\n🔍 Artifacts found in frequency analysis';
+          return 'DEEPFAKE DETECTED\n⚠️ Authenticity: ${(100 - confidence).toStringAsFixed(1)}%\n🤖 AI Generated: High probability\n🔍 Artifacts found in frequency analysis\n⚡ Fake Confidence: ${confidence.toStringAsFixed(1)}%';
         }
       } else {
         return 'Prediction failed. Status code: ${response.statusCode}\nPlease check your internet connection and try again.';
       }
     } catch (e) {
-      return 'Error during prediction: $e\nPlease ensure the audio file is in a supported format (WAV) and try again.';
+      return 'Error during prediction: $e\nPlease ensure the audio file is in a supported format and try again.';
     }
   }
 }
