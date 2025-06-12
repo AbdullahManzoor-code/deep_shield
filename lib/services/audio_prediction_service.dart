@@ -13,22 +13,35 @@ class AudioPredictionService {
         Uri.parse(_apiUrl),
       );
 
-      // Add the audio file as form-data with field name "audio"
+      // Set proper headers for form-data
+      request.headers.addAll({
+        'Content-Type': 'multipart/form-data',
+      });
+
+      // Add the audio file as form-data with field name "audio" (exactly as shown in Postman)
       request.files.add(await http.MultipartFile.fromPath(
-        'audio',  // API expects the input to be named 'audio'
+        'audio',  // This matches the "audio" field name in your Postman screenshot
         audioFile.path,
         filename: basename(audioFile.path),
       ));
+
+      print('Sending request to: $_apiUrl');
+      print('Audio file: ${basename(audioFile.path)}');
+      print('File size: ${await audioFile.length()} bytes');
 
       var response = await request.send();
 
       if (response.statusCode == 200) {
         final resStr = await response.stream.bytesToString();
+        print('API Response: $resStr'); // Debug print
         final jsonResponse = json.decode(resStr);
 
         // Extract label and scores from the API response
         final label = jsonResponse['label']; // Get the label from response
         final scores = jsonResponse['scores']; // Get the scores object
+        
+        print('Label: $label'); // Debug print
+        print('Scores: $scores'); // Debug print
         
         // Determine if it's real or fake based on the label
         final isReal = label.toString().toLowerCase().contains('real');
@@ -48,7 +61,9 @@ class AudioPredictionService {
           return 'DEEPFAKE DETECTED\n⚠️ Authenticity: ${(100 - confidence).toStringAsFixed(1)}%\n🤖 AI Generated: High probability\n🔍 Artifacts found in frequency analysis\n⚡ Fake Confidence: ${confidence.toStringAsFixed(1)}%';
         }
       } else {
-        return 'Prediction failed. Status code: ${response.statusCode}\nPlease check your internet connection and try again.';
+        final errorBody = await response.stream.bytesToString();
+        print('Error response: $errorBody'); // Debug print
+        return 'Prediction failed. Status code: ${response.statusCode}\nError: $errorBody\nPlease check your internet connection and try again.';
       }
     } catch (e) {
       return 'Error during prediction: $e\nPlease ensure the audio file is in a supported format and try again.';
