@@ -25,23 +25,15 @@ class AudioPredictionService {
 
       if (response.statusCode == 200) {
         final data = json.decode(response.body);
-        
-        print('API Response: ${response.body}'); // Debug print
-        print('Label: ${data['label']}'); // Debug print
-        print('Scores: ${data['scores']}'); // Debug print
-        
         final label = data['label'];
         final scores = data['scores'];
         final fakeScore = (scores['fake'] * 100).toDouble();
         final realScore = (scores['real'] * 100).toDouble();
-        
-        // Determine if it's real or fake based on the label
         final isReal = label.toString().toLowerCase().contains('real');
-        
         if (isReal) {
-          return 'REAL VOICE DETECTED\n✅ Authenticity: ${realScore.toStringAsFixed(1)}%\n🔊 Voice Analysis: Natural speech patterns\n⚡ Confidence: ${realScore > 80 ? 'High' : realScore > 60 ? 'Medium' : 'Low'}\n📊 Fake Score: ${fakeScore.toStringAsFixed(1)}%';
+          return 'REAL VOICE DETECTED\nAuthenticity: ${realScore.toStringAsFixed(1)}%';
         } else {
-          return 'DEEPFAKE DETECTED\n⚠️ Authenticity: ${realScore.toStringAsFixed(1)}%\n🤖 AI Generated: High probability\n🔍 Artifacts found in frequency analysis\n⚡ Fake Confidence: ${fakeScore.toStringAsFixed(1)}%';
+          return 'DEEPFAKE DETECTED\nFake Confidence: ${fakeScore.toStringAsFixed(1)}%';
         }
       } else {
         return 'Prediction failed. Status code: ${response.statusCode}\nPlease check your internet connection and try again.';
