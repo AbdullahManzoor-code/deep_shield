@@ -69,7 +69,7 @@ class _FileSelectionScreenState extends State<FileSelectionScreen> {
     final screenHeight = mediaQuery.size.height - mediaQuery.padding.top - mediaQuery.padding.bottom;
     final screenWidth = mediaQuery.size.width;
     // Calculate heights for each section based on available screen height
-    final headerHeight = screenHeight * 0.10;
+    final headerHeight = screenHeight * 0.08;
     final logoHeight = screenHeight * 0.18;
     final infoCardHeight = screenHeight * 0.13;
     final fileCardHeight = screenHeight * 0.32;
@@ -93,306 +93,264 @@ class _FileSelectionScreenState extends State<FileSelectionScreen> {
         child: SafeArea(
           child: Padding(
             padding: context.responsivePadding,
-            child: SizedBox(
-              width: screenWidth,
-              height: screenHeight,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  // Header
-                  Container(
-                    width: double.infinity,
-                    height: headerHeight,
-                    constraints: BoxConstraints(
-                      maxWidth: context.maxContentWidth * 0.8,
-                    ),
-                    padding: context.cardPadding,
-                    margin: EdgeInsets.only(top: 8, bottom: spacing * 0.5),
-                    decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                        colors: [
-                          Colors.purple.shade600,
-                          Colors.deepPurple.shade800,
-                        ],
-                        begin: Alignment.topLeft,
-                        end: Alignment.bottomRight,
-                      ),
-                      borderRadius: BorderRadius.circular(context.borderRadius),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.purple.withOpacity(0.3),
-                          blurRadius: 20,
-                          offset: const Offset(0, 10),
-                        ),
-                      ],
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
+            child: Column(
+              children: [
+                Expanded(
+                  child: SingleChildScrollView(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        Text(
-                          'Deep Shield',
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: context.titleFontSize,
-                            fontWeight: FontWeight.bold,
-                            letterSpacing: 1.2,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  // Logo Section
-                  SizedBox(
-                    height: logoHeight,
-                    child: Stack(
-                      alignment: Alignment.center,
-                      children: [
+                        // Header
                         Container(
-                          width: logoHeight,
-                          height: logoHeight,
+                          width: double.infinity,
+                          height: headerHeight,
+                          constraints: BoxConstraints(
+                            maxWidth: context.maxContentWidth * 0.8,
+                          ),
+                          padding: context.cardPadding,
+                          margin: EdgeInsets.only(top: 8, bottom: spacing * 0.5),
                           decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            gradient: const RadialGradient(
+                            gradient: LinearGradient(
                               colors: [
-                                Color(0xFF00FFFF), // Cyan
-                                Color(0xFF0080FF), // Blue
-                                Color(0xFF8A2BE2), // Purple
+                                Colors.purple.shade600,
+                                Colors.deepPurple.shade800,
                               ],
-                              stops: [0.0, 0.6, 1.0],
+                              begin: Alignment.topLeft,
+                              end: Alignment.bottomRight,
                             ),
+                            borderRadius: BorderRadius.circular(context.borderRadius),
                             boxShadow: [
                               BoxShadow(
-                                color: Colors.cyan.withOpacity(0.5),
-                                blurRadius: context.isDesktop ? 40 : 30,
-                                spreadRadius: context.isDesktop ? 15 : 10,
-                              ),
-                              BoxShadow(
                                 color: Colors.purple.withOpacity(0.3),
-                                blurRadius: context.isDesktop ? 60 : 50,
-                                spreadRadius: context.isDesktop ? 25 : 20,
+                                blurRadius: 20,
+                                offset: const Offset(0, 10),
                               ),
                             ],
                           ),
-                          child: Container(
-                            margin: EdgeInsets.all(context.isDesktop ? 12 : 8),
-                            decoration: const BoxDecoration(
-                              shape: BoxShape.circle,
-                              color: Color(0xFF1A1A1A),
-                            ),
-                            child: ClipOval(
-                              child: Image.asset(
-                                'asset/logo.png',
-                                width: logoHeight - 16,
-                                height: logoHeight - 16,
-                                fit: BoxFit.cover,
-                                errorBuilder: (context, error, stackTrace) {
-                                  return Icon(
-                                    Icons.security,
-                                    size: logoHeight * 0.4,
-                                    color: Colors.white,
-                                  );
-                                },
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(
+                                'Deep Shield',
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: context.titleFontSize-2,
+                                  fontWeight: FontWeight.bold,
+                                  letterSpacing: 1.2,
+                                ),
                               ),
-                            ),
+                            ],
                           ),
                         ),
-                        if (widget.isDetecting)
-                          SizedBox(
-                            width: logoHeight,
-                            height: logoHeight,
-                            child: CircularProgressIndicator(
-                              color: Colors.cyan,
-                              strokeWidth: 7,
-                            ),
+                        // Logo Section
+                        SizedBox(
+                          height: logoHeight,
+                          child: Stack(
+                            alignment: Alignment.center,
+                            children: [
+                              Container(
+                                width: logoHeight,
+                                height: logoHeight,
+                                decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  gradient: const RadialGradient(
+                                    colors: [
+                                      Color(0xFF00FFFF), // Cyan
+                                      Color(0xFF0080FF), // Blue
+                                      Color(0xFF8A2BE2), // Purple
+                                    ],
+                                    stops: [0.0, 0.6, 1.0],
+                                  ),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Colors.cyan.withOpacity(0.5),
+                                      blurRadius: context.isDesktop ? 40 : 30,
+                                      spreadRadius: context.isDesktop ? 15 : 10,
+                                    ),
+                                    BoxShadow(
+                                      color: Colors.purple.withOpacity(0.3),
+                                      blurRadius: context.isDesktop ? 60 : 50,
+                                      spreadRadius: context.isDesktop ? 25 : 20,
+                                    ),
+                                  ],
+                                ),
+                                child: Container(
+                                  margin: EdgeInsets.all(context.isDesktop ? 12 : 8),
+                                  decoration: const BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    color: Color(0xFF1A1A1A),
+                                  ),
+                                  child: ClipOval(
+                                    child: Image.asset(
+                                      'asset/logo.png',
+                                      width: logoHeight - 16,
+                                      height: logoHeight - 16,
+                                      fit: BoxFit.cover,
+                                      errorBuilder: (context, error, stackTrace) {
+                                        return Icon(
+                                          Icons.security,
+                                          size: logoHeight * 0.4,
+                                          color: Colors.white,
+                                        );
+                                      },
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              if (widget.isDetecting)
+                                SizedBox(
+                                  width: logoHeight,
+                                  height: logoHeight,
+                                  child: CircularProgressIndicator(
+                                    color: Colors.cyan,
+                                    strokeWidth:5,
+                                  ),
+                                ),
+                            ],
                           ),
-                      ],
-                    ),
-                  ),
-                  SizedBox(height: spacing * 0.7),
-                  // Info Card
-                  Container(
-                    width: double.infinity,
-                    height: infoCardHeight,
+                        ),
+                        // SizedBox(height: spacing * 0.7),
+                        // Info Card as Expandable Button
+                        SizedBox(height: spacing * 0.7),
+                        // File Selection Card
+                         Container(
                     constraints: BoxConstraints(
-                      maxWidth: context.maxContentWidth * 0.8,
+                      maxWidth: context.maxContentWidth * 0.9,
                     ),
-                    padding: EdgeInsets.all(context.isDesktop ? 25 : 20),
+                    padding: context.cardPadding * 0.8,
                     decoration: BoxDecoration(
-                      color: Colors.blue[900]!.withOpacity(0.2),
-                      borderRadius: BorderRadius.circular(context.borderRadius * 0.8),
-                      border: Border.all(
-                        color: Colors.blue.withOpacity(0.3),
-                        width: 1,
-                      ),
-                    ),
-                    child: Row(
-                      children: [
-                        Icon(
-                          Icons.info_outline_rounded,
-                          color: Colors.blue[300],
-                          size: context.iconSize,
-                        ),
-                        SizedBox(width: context.getSpacing(0.5)),
-                        Expanded(
-                          child: Text(
-                            'Upload an audio file to detect if it\'s generated by AI or is authentic human speech.',
-                            style: TextStyle(
-                              color: Colors.blue[100],
-                              fontSize: context.bodyFontSize,
-                              height: 1.4,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  SizedBox(height: spacing * 0.7),
-                  // File Selection Card
-                  Container(
-                    width: double.infinity,
-                    height: fileCardHeight,
-                    constraints: BoxConstraints(
-                      maxWidth: context.maxContentWidth * 0.8,
-                    ),
-                    padding: context.cardPadding,
-                    decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                        colors: [
-                          Colors.grey[800]!.withOpacity(0.8),
-                          Colors.grey[900]!.withOpacity(0.9),
-                        ],
-                        begin: Alignment.topLeft,
-                        end: Alignment.bottomRight,
-                      ),
+                      color: Colors.white.withOpacity(0.05),
                       borderRadius: BorderRadius.circular(context.borderRadius),
                       border: Border.all(
-                        color: Colors.purple.withOpacity(0.3),
+                        color: Colors.white.withOpacity(0.1),
                         width: 1,
                       ),
                       boxShadow: [
                         BoxShadow(
-                          color: Colors.black.withOpacity(0.5),
+                          color: Colors.black.withOpacity(0.3),
                           blurRadius: 15,
-                          offset: const Offset(0, 8),
+                          offset: const Offset(0, 5),
                         ),
                       ],
                     ),
                     child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
+                        ExpandableInfoCard(),
                         Icon(
-                          Icons.audiotrack_rounded,
+                          Icons.audiotrack,
+                          color: Colors.blue.shade300,
                           size: context.iconSize + 16,
-                          color: Colors.purple[300],
                         ),
+                        SizedBox(height: context.getSpacing(0.5)),
+                        Text(
+                          'Audio File',
+                          style: TextStyle(
+                            color: Colors.white.withOpacity(0.7),
+                            fontSize: context.bodyFontSize + 2,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                        SizedBox(height: context.getSpacing(0.3)),
                         Text(
                           widget.file != null ? p.basename(widget.file!.path) : 'No file selected',
                           style: TextStyle(
                             color: Colors.white,
-                            fontSize: context.subtitleFontSize,
-                            fontWeight: FontWeight.w500,
+                            fontSize: context.bodyFontSize,
+                            fontWeight: FontWeight.w400,
                           ),
-                          textAlign: TextAlign.center,
+                          overflow: TextOverflow.ellipsis,
                         ),
-                        SizedBox(height: context.getSpacing(0.5)),
-                        if (widget.file != null)
-                          Padding(
-                            padding: const EdgeInsets.symmetric(vertical: 4.0),
-                            child: _ModernAudioPlayerBar(
-                              audioPlayer: _audioPlayer,
-                              file: widget.file!,
-                              isPlaying: _isPlaying,
-                              isAudioError: _isAudioError,
-                              onPlayPause: _togglePlayPause,
-                            ),
-                          ),
-                        if (_isAudioError)
-                          Padding(
-                            padding: const EdgeInsets.only(top: 4.0),
-                            child: Text(
-                              'Could not play audio file.',
-                              style: TextStyle(color: Colors.red[200], fontSize: context.bodyFontSize),
-                            ),
-                          ),
-                        SizedBox(height: context.getSpacing(0.5)),
-                        // File Selection Button
-                        SizedBox(
-                          width: double.infinity,
-                          height: context.buttonHeight,
-                          child: ElevatedButton.icon(
-                            onPressed: widget.onFileSelect,
-                            icon: const Icon(Icons.folder_open_rounded),
-                            label: Text(
-                              'Choose Audio File',
-                              style: TextStyle(
-                                fontSize: context.bodyFontSize + 2,
-                                fontWeight: FontWeight.w600,
-                              ),
-                            ),
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.purple,
-                              foregroundColor: Colors.white,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(context.borderRadius * 0.8),
-                              ),
-                              elevation: 8,
-                              shadowColor: Colors.purple.withOpacity(0.5),
-                            ),
-                          ),
+                        SizedBox(height: context.getSpacing(0.8)),
+                        // Audio Player Progress Bar and Play/Pause
+                     ModernAudioPlayerBar(
+                          audioPlayer: _audioPlayer,
+                          file: widget.file ?? File(''), // Provide a dummy file if null, or handle in widget
+                          isPlaying: _isPlaying,
+                          isAudioError: _isAudioError,
+                          onPlayPause: _togglePlayPause,
                         ),
-                        SizedBox(height: context.getSpacing(0.5)),
-                        // Detection Button
-                        SizedBox(
-                          width: double.infinity,
-                          height: context.buttonHeight + 6,
-                          child: ElevatedButton.icon(
-                            onPressed: widget.file != null && !widget.isDetecting 
-                                ? widget.onStartDetection 
-                                : null,
-                            icon: widget.isDetecting
-                                ? SizedBox(
-                                    width: 20,
-                                    height: 20,
-                                    child: CircularProgressIndicator(
-                                      color: Colors.white,
-                                      strokeWidth: 2,
+                                                      SizedBox(height: context.getSpacing(0.5)),
+
+                           // File Selection Button
+                              SizedBox(
+                                width: double.infinity,
+                                height: context.buttonHeight,
+                                child: ElevatedButton.icon(
+                                  onPressed: widget.onFileSelect,
+                                  icon: const Icon(Icons.folder_open_rounded),
+                                  label: Text(
+                                    'Choose Audio File',
+                                    style: TextStyle(
+                                      fontSize: context.bodyFontSize + 2,
+                                      fontWeight: FontWeight.w600,
                                     ),
-                                  )
-                                : Icon(
-                                    Icons.play_circle_filled_rounded, 
-                                    size: context.iconSize + 4,
                                   ),
-                            label: Text(
-                              widget.isDetecting ? 'Analyzing...' : 'Start Detection',
-                              style: TextStyle(
-                                fontSize: context.subtitleFontSize,
-                                fontWeight: FontWeight.bold,
-                                letterSpacing: 0.5,
+                                  style: ElevatedButton.styleFrom(
+                                    backgroundColor: Colors.purple,
+                                    foregroundColor: Colors.white,
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(context.borderRadius * 0.8),
+                                    ),
+                                    elevation: 8,
+                                    shadowColor: Colors.purple.withOpacity(0.5),
+                                  ),
+                                ),
                               ),
-                            ),
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: widget.file != null && !widget.isDetecting
-                                  ? Colors.green[600]
-                                  : Colors.grey[600],
-                              foregroundColor: Colors.white,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(context.borderRadius),
-                              ),
-                              elevation: widget.file != null ? 12 : 4,
-                              shadowColor: widget.file != null
-                                  ? Colors.green.withOpacity(0.5)
-                                  : Colors.grey.withOpacity(0.3),
-                            ),
-                          ),
-                        ),
                       ],
                     ),
                   ),
-                  SizedBox(height: spacing),
-                ],
-              ),
+                       ],
+                    ),
+                  ),
+                ),
+
+                // Detection Button fixed at the bottom
+                Padding(
+                  padding: EdgeInsets.only(top: spacing, bottom: context.getSpacing(1)),
+                  child: SizedBox(
+                    width: double.infinity,
+                    height: context.buttonHeight + 10,
+                    child: ElevatedButton.icon(
+                      onPressed: widget.file != null
+                          ? widget.onStartDetection 
+                          : null,
+                      icon: widget.isDetecting
+                          ? SizedBox(
+                              width: 22,
+                              height: 22,
+                              child: CircularProgressIndicator(
+                                color: Colors.white,
+                                strokeWidth: 2.5,
+                              ),
+                            )
+                          : Icon(
+                              Icons.play_circle_filled_rounded, 
+                              size: context.iconSize + 6,
+                            ),
+                      label: Text(
+                        widget.isDetecting ? 'Analyzing...' : 'Start Detection',
+                        style: TextStyle(
+                          fontSize: context.subtitleFontSize,
+                          fontWeight: FontWeight.bold,
+                          letterSpacing: 0.7,
+                        ),
+                      ),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.green[600],
+                        foregroundColor: Colors.white,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(context.borderRadius * 1.2),
+                        ),
+                        elevation: 16,
+                        shadowColor: Colors.green.withOpacity(0.5),
+                        padding: EdgeInsets.symmetric(vertical: 18),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
             ),
           ),
         ),
@@ -401,14 +359,14 @@ class _FileSelectionScreenState extends State<FileSelectionScreen> {
   }
 }
 
-class _ModernAudioPlayerBar extends StatefulWidget {
+class ModernAudioPlayerBar extends StatefulWidget {
   final AudioPlayer audioPlayer;
   final File file;
   final bool isPlaying;
   final bool isAudioError;
   final VoidCallback onPlayPause;
 
-  const _ModernAudioPlayerBar({
+  const ModernAudioPlayerBar({
     required this.audioPlayer,
     required this.file,
     required this.isPlaying,
@@ -417,10 +375,10 @@ class _ModernAudioPlayerBar extends StatefulWidget {
   });
 
   @override
-  State<_ModernAudioPlayerBar> createState() => _ModernAudioPlayerBarState();
+  State<ModernAudioPlayerBar> createState() => ModernAudioPlayerBarState();
 }
 
-class _ModernAudioPlayerBarState extends State<_ModernAudioPlayerBar> {
+class ModernAudioPlayerBarState extends State<ModernAudioPlayerBar> {
   Duration _position = Duration.zero;
   Duration _duration = Duration.zero;
   late final AudioPlayer _audioPlayer;
@@ -514,5 +472,66 @@ class _ModernAudioPlayerBarState extends State<_ModernAudioPlayerBar> {
     final minutes = twoDigits(d.inMinutes.remainder(60));
     final seconds = twoDigits(d.inSeconds.remainder(60));
     return '$minutes:$seconds';
+  }
+}
+
+class ExpandableInfoCard extends StatefulWidget {
+  @override
+  State<ExpandableInfoCard> createState() => _ExpandableInfoCardState();
+}
+
+class _ExpandableInfoCardState extends State<ExpandableInfoCard> {
+  bool _expanded = false;
+
+  @override
+  Widget build(BuildContext context) {
+    final iconColor = Theme.of(context).brightness == Brightness.dark
+        ? Colors.blue[300]
+        : Colors.blue[700];
+    final infoText = "Upload an audio file to detect if it's generated by AI or is authentic human speech.";
+    return Column(
+      children: [
+        SizedBox(
+          width: 48,
+          height: 48,
+          child: IconButton(
+            icon: Icon(_expanded ? Icons.info : Icons.info_outline_rounded, color: iconColor, size: 32),
+            tooltip: _expanded ? 'Hide Info' : 'Show Info',
+            onPressed: () => setState(() => _expanded = !_expanded),
+          ),
+        ),
+        AnimatedCrossFade(
+          firstChild: SizedBox.shrink(),
+          secondChild: Container(
+            width: double.infinity,
+            margin: const EdgeInsets.only(top: 8),
+            padding: const EdgeInsets.all(16),
+            decoration: BoxDecoration(
+              color: Colors.blue[900]?.withOpacity(0.15) ?? Colors.blue.withOpacity(0.15),
+              borderRadius: BorderRadius.circular(14),
+              border: Border.all(color: Colors.blue.withOpacity(0.2)),
+            ),
+            child: Row(
+              children: [
+                // Icon(Icons.info_outline_rounded, color: iconColor),
+                // const SizedBox(width: 12),
+                Expanded(
+                  child: Text(
+                    infoText,
+                    style: TextStyle(
+                      color: Colors.blue[100] ?? Colors.blue,
+                      fontSize: Theme.of(context).textTheme.bodySmall?.fontSize ?? 16,
+                      height: 1.4,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          crossFadeState: _expanded ? CrossFadeState.showSecond : CrossFadeState.showFirst,
+          duration: const Duration(milliseconds: 250),
+        ),
+      ],
+    );
   }
 }

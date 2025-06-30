@@ -5,6 +5,7 @@ import 'package:path/path.dart' as p;
 import 'screens/file_selection_screen.dart';
 import 'screens/results_screen.dart';
 import 'services/audio_prediction_service.dart';
+import 'screens/splash_screen.dart';
 
 void main() {
   runApp(const DeepShieldApp());
@@ -28,8 +29,9 @@ class DeepShieldApp extends StatelessWidget {
           elevation: 0,
         ),
       ),
-      home: const MainScreen(),
+      home: const SplashScreen(),
       routes: {
+        '/main': (context) => const MainScreen(),
         '/results': (context) => ResultsScreen(
           file: File('Audio.mp3'), 
           result: 'Detection completed successfully!'

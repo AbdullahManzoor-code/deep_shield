@@ -1,4 +1,5 @@
 import 'package:audioplayers/audioplayers.dart';
+import 'package:deep_shield/screens/file_selection_screen.dart';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:path/path.dart' as p;
@@ -178,7 +179,7 @@ class _ResultsScreenState extends State<ResultsScreen> {
                         ),
                         SizedBox(height: context.getSpacing(0.8)),
                         // Audio Player Progress Bar and Play/Pause
-                        _AudioPlayerBar(
+                     ModernAudioPlayerBar(
                           audioPlayer: _audioPlayer,
                           file: widget.file,
                           isPlaying: _isPlaying,
@@ -351,11 +352,11 @@ class _ResultsScreenState extends State<ResultsScreen> {
                               );
                             },
                             icon: Icon(
-                              Icons.play_circle_filled_rounded, 
+                              Icons.replay_rounded,
                               size: context.iconSize + 4,
                             ),
                             label: Text(
-                              'Start Detection',
+                              'Start New Detection',
                               style: TextStyle(
                                 fontSize: context.subtitleFontSize,
                                 fontWeight: FontWeight.bold,
